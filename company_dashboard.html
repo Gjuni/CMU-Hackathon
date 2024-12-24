@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Dashboard</title>
+    <link rel="stylesheet" href="company_dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Logo Section -->
+        <div class="logo-section">
+          <a href="./login.html">
+            <img
+              src="./images/system_logo.png"
+              alt="Battery Icon"
+              class="logo-icon"
+            />
+            <h2>Lithium Loop</h2>
+          </a>
+        </div>
+        <!-- Menu Section -->
+        <nav class="menu-section">
+          <img
+            src="./images/sungyillhightech.png"
+            alt="Company Logo"
+            class="admin-logo"
+          />
+          <span id="user-name"></span>
+          <div class="logout-section" id="logout-section">
+            <img id="logout-btn" src="./images/logout.png" alt="logout" />
+            <p>Logout</p>
+          </div>
+
+          <ul>
+            <div class="menu-item selected" id="dashboard-menu-item">
+              <a href="./company_dashboard.html">
+                <img
+                  src="./images/dashboard.png"
+                  alt="management_icon"
+                  class="management-logo"
+                />
+                <li>Dashboard</li>
+              </a>
+            </div>
+          </ul>
+          <ul>
+            <div class="menu-item" id="buy-menu-item">
+              <a href="./company_buy.html">
+                <img
+                  src="./images/buy.png"
+                  alt="management_icon"
+                  class="management-logo"
+                />
+                <li>Buy</li>
+              </a>
+            </div>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Main Dashboard -->
+      <main class="dashboard">
+        <h1 style="margin-top: 0px">Dashboard</h1>
+        <div class="stats-cards">
+          <div class="card">
+            <h4>Current Credits</h4>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <img
+                style="
+                  width: 20px;
+                  height: 20px;
+                  margin-right: 10px;
+                  margin-top: 9px;
+                "
+                src="./images/dollar.png"
+              />
+              <p>3240.5$</p>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Total Batteries Buy</h4>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <img
+                style="
+                  width: 12px;
+                  height: 20px;
+                  margin-right: 10px;
+                  margin-top: 9px;
+                "
+                src="./images/bettery.png"
+              />
+              <p>5,000</p>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Carbon Emission Reduced</h4>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <p>16.325</p>
+            </div>
+
+            <span style="color: gray; font-size: 12px">kgCO2e/t metal</span>
+          </div>
+        </div>
+        <div class="dashboard-content">
+          <div class="graph-section">
+            <h3 style="margin-top: 0px">Emission Savings Graph</h3>
+            <canvas
+              id="carbonContributionGraph"
+              width="400"
+              height="230"
+            ></canvas>
+            <script>
+              // Example data for the graph
+              const salesData = [
+                { date: "2024-01", batteriesSold: 10 },
+                { date: "2024-02", batteriesSold: 15 },
+                { date: "2024-03", batteriesSold: 7 },
+                { date: "2024-04", batteriesSold: 12 },
+                { date: "2024-05", batteriesSold: 5 },
+              ];
+
+              // Carbon emission contribution (calculating based on 0.05 kg CO2 per battery)
+              const labels = salesData.map((item) => item.date);
+              const carbonContributions = salesData.map(
+                (item) => item.batteriesSold * 0.05
+              ); // 1 battery = 0.05 kg CO2
+
+              // Drawing the graph
+              const ctx = document
+                .getElementById("carbonContributionGraph")
+                .getContext("2d");
+              const carbonContributionGraph = new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: labels, // X-axis labels (dates)
+                  datasets: [
+                    {
+                      label: "Carbon Emission Contribution (kg CO2)",
+                      data: carbonContributions, // Y-axis data (carbon contribution)
+                      borderColor: "rgba(75, 192, 192, 1)",
+                      backgroundColor: "rgba(75, 192, 192, 0.2)",
+                      fill: true,
+                      tension: 0.4,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        stepSize: 0.5,
+                      },
+                      title: {
+                        display: true,
+                        text: "Carbon Emission Contribution (kg CO2)",
+                      },
+                    },
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Period",
+                      },
+                    },
+                  },
+                },
+              });
+            </script>
+          </div>
+          <div class="rank-section">
+            <h3 style="margin-top: 0px">Company Rank</h3>
+            <table style="margin-top: 0px" class="rank-table">
+              <thead>
+                <tr>
+                  <th width="10%">Rank</th>
+                  <th style="width: 20%"></th>
+                  <th>Company Name</th>
+                  <th style="width: 20%">Emission Reduced</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>4</td>
+                  <td>
+                    <img
+                      src="./images/econowatt.png"
+                      alt="Company Logo"
+                      class="rank-logo"
+                      style="width: 50px; height: 50px"
+                    />
+                  </td>
+                  <td>Econowatt</td>
+                  <td>7.2%</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>
+                    <img
+                      src="./images/sungyillhightech.png"
+                      alt="Company Logo"
+                      class="rank-logo"
+                      style="width: 50px; height: 50px"
+                    />
+                  </td>
+                  <td>SungEel HiTech</td>
+                  <td>6.1%</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>
+                    <img
+                      src="./images/samsung.png"
+                      alt="Company Logo"
+                      class="rank-logo"
+                      style="width: 50px; height: 50px"
+                    />
+                  </td>
+                  <td>Samsung</td>
+                  <td>5.5%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="purchase-history">
+          <h3 style="margin-top: 0px">Recent Purchase History</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Battery Type</th>
+                <th>Batteries Purchase</th>
+                <th>Costs</th>
+                <th>Carbon Emission Reduced</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2024-05-01</td>
+                <td>Litium AAA</td>
+                <td>200</td>
+                <td>60$</td>
+                <td>0.06</td>
+              </tr>
+              <tr>
+                <td>2024-04-15</td>
+                <td>Alkaline</td>
+                <td>2,300</td>
+                <td>690$</td>
+                <td>0.67</td>
+              </tr>
+              <tr>
+                <td>2024-03-20</td>
+                <td>Zinc-Carbon</td>
+                <td>780</td>
+                <td>234$</td>
+                <td>0.15</td>
+              </tr>
+              <tr>
+                <td>2024-02-10</td>
+                <td>Silver Oxide</td>
+                <td>1532</td>
+                <td>459.6$</td>
+                <td>0.45</td>
+              </tr>
+              <tr>
+                <td>2024-01-05</td>
+                <td>Zinc-Air</td>
+                <td>940</td>
+                <td>282$</td>
+                <td>0.21</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script>
+    document
+      .getElementById("buy-menu-item")
+      .addEventListener("click", function () {
+        window.location.href = "company_buy.html"; // Target page
+      });
+
+    document
+      .getElementById("dashboard-menu-item")
+      .addEventListener("click", function () {
+        window.location.href = "company_dashboard.html"; // Target page
+      });
+
+    // 현재 로그인된 사용자 정보 렌더링
+    function renderUserName() {
+      const currentUser = JSON.parse(localStorage.getItem("current_login"));
+
+      if (currentUser && currentUser.name) {
+        document.getElementById("user-name").textContent = currentUser.name;
+      } else {
+        document.getElementById("user-name").textContent = "Guest";
+      }
+    }
+
+    document.querySelectorAll(".menu-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        // 모든 메뉴 항목에서 `selected` 클래스 제거
+        document.querySelectorAll(".menu-item").forEach((menu) => {
+          menu.classList.remove("selected");
+        });
+
+        // 클릭된 항목에 `selected` 클래스 추가
+        item.classList.add("selected");
+      });
+    });
+
+    // 초기화 시 실행
+    document.addEventListener("DOMContentLoaded", () => {
+      renderUserName(); // 유저 이름 렌더링
+
+      // 로그아웃 이벤트 처리
+      document
+        .getElementById("logout-section")
+        .addEventListener("click", () => {
+          // 로컬스토리지에서 current_login 삭제
+          localStorage.removeItem("current_login");
+
+          // 로그인 페이지로 리다이렉트
+          window.location.href = "./login.html";
+        });
+    });
+  </script>
+</html>

@@ -1,0 +1,236 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #eff3fb;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  text-decoration-line: none;
+  color: black;
+}
+
+.container {
+  display: flex;
+  height: 95vh;
+  margin: 30px;
+  margin-bottom: 0px;
+  gap: 40px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 300px;
+  height: 91.5vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo Section */
+.logo-section {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.logo-section h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+/* Menu Section */
+.menu-section {
+  text-align: center;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.admin-logo {
+  border-radius: 100px;
+  width: 120px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.logout-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+#logout-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.logout-section p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.menu-section span {
+  display: block;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.menu-section ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+/* Hover Effect for Menu Items */
+.menu-item {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #95c8ff;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+/* Selected Menu Item */
+.menu-item.selected {
+  background-color: #1787ff;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.management-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.menu-section li {
+  padding: 10px 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Main Content Styles */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Section Styles */
+.section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.filters button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.filters button.active {
+  background-color: #007bff;
+  color: white;
+}
+.products {
+  display: flex;
+  gap: 20px;
+}
+.product {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+}
+.product img {
+  width: 100%;
+  max-width: 150px;
+  margin-bottom: 10px;
+}
+.product button {
+  padding: 10px 15px;
+  background-color: #79D7BE;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[name="quantity"] {
+  width: 35px;
+}
+
+.quantity-group {
+  display: inline-block;
+  gap: 10px;
+  text-align: left;
+}
+
+.button-group {
+  display: inline-block;
+  gap: 10px;
+  text-align: right;
+}
+
+a {
+  text-decoration: none;
+}

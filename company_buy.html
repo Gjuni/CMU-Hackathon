@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recycle Battery Management</title>
+    <link rel="stylesheet" href="company_buy.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Logo Section -->
+        <div class="logo-section">
+          <img
+            src="./images/system_logo.png"
+            alt="Battery Icon"
+            class="logo-icon"
+          />
+          <h2>Lithium Loop</h2>
+        </div>
+        <!-- Menu Section -->
+        <nav class="menu-section">
+          <img
+            src="./images/sungyillhightech.png"
+            alt="Company Logo"
+            class="admin-logo"
+          />
+          <span id="user-name"></span>
+          <div class="logout-section" id="logout-section">
+            <img id="logout-btn" src="./images/logout.png" alt="logout" />
+            <p>Logout</p>
+          </div>
+
+          <ul>
+            <div class="menu-item" id="dashboard-menu-item">
+              <img
+                src="./images/dashboard.png"
+                alt="management_icon"
+                class="management-logo"
+              />
+              <li>Dashboard</li>
+            </div>
+          </ul>
+          <ul>
+            <div class="menu-item selected" id="buy-menu-item">
+              <img
+                src="./images/buy.png"
+                alt="management_icon"
+                class="management-logo"
+              />
+              <li>Buy</li>
+            </div>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <h1 style="margin-top: 0px;">Buy</h1>
+        <div class="content">
+          <div class="filters">
+            <button class="filter-btn">Alkaline</button>
+            <button class="filter-btn">Lithium</button>
+            <button class="filter-btn">Zinc-Carbon</button>
+            <button class="filter-btn">Silver Oxide</button>
+            <button class="filter-btn">Zinc-Air</button>
+          </div>
+          <div class="products" id="product-list"></div>
+        </div>
+      </main>
+    </div>
+
+    <script src="company_buy.js"></script>
+  </body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recycle Battery Management</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Logo Section -->
+        <div class="logo-section">
+          <img
+            src="./images/system_logo.png"
+            alt="Battery Icon"
+            class="logo-icon"
+          />
+          <h2>Lithium Loop</h2>
+        </div>
+        <!-- Menu Section -->
+        <nav class="menu-section">
+          <img src="./images/admin.jpg" alt="Company Logo" class="admin-logo" />
+          <span id="user-name"></span>
+          <div class="logout-section" id="logout-section">
+            <img id="logout-btn" src="./images/logout.png" alt="logout" />
+            <p>Logout</p>
+          </div>
+
+          <ul>
+            <div class="menu-item selected" id="management-item">
+              <img
+                src="./images/dashboard.png"
+                alt="management_icon"
+                class="management-logo"
+              />
+              <li>Management</li>
+            </div>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <h1>Management</h1>
+
+        <!-- Our Batteries -->
+        <section class="section">
+          <h2 style="margin-top: 0px">Our Batteries</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Cost per one</th>
+                <th>Costs</th>
+              </tr>
+            </thead>
+            <tbody id="battery-data"></tbody>
+          </table>
+        </section>
+
+        <!-- Selling Requests -->
+        <section class="section">
+          <h2 style="margin-top: 0px">Selling Requests</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Address</th>
+                <th>Amount</th>
+                <th>Cost</th>
+                <th>Apply</th>
+              </tr>
+            </thead>
+            <tbody id="selling-requests-data"></tbody>
+          </table>
+        </section>
+
+        <!-- Purchasing Requests -->
+        <section class="section">
+          <h2 style="margin-top: 0px">Purchasing Requests</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Cost</th>
+                <th>Apply</th>
+              </tr>
+            </thead>
+            <tbody id="purchasing-requests-data"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </body>
+  <script>
+    document
+      .getElementById("management-item")
+      .addEventListener("click", function () {
+        window.location.href = "admin.html"; // Target page
+      });
+
+    // 로컬스토리지에서 데이터 가져오기
+    function getBatteriesFromLocalStorage() {
+      const batteries = localStorage.getItem("batteries");
+      return batteries ? JSON.parse(batteries) : [];
+    }
+
+    // 로컬스토리지에서 데이터 가져오기
+    function getSellingRequestsFromLocalStorage() {
+      const requests = localStorage.getItem("selling_requests");
+      return requests ? JSON.parse(requests) : [];
+    }
+
+    // 로컬스토리지에서 데이터 가져오기
+    function getPurchasingRequestsFromLocalStorage() {
+      const requests = localStorage.getItem("purchasing_requests");
+      return requests ? JSON.parse(requests) : [];
+    }
+
+    // 데이터를 렌더링하는 함수
+    function renderBatteries(data) {
+      const tbody = document.getElementById("battery-data");
+      tbody.innerHTML = ""; // 기존 내용을 비우기
+
+      data.forEach((battery) => {
+        const row = document.createElement("tr");
+
+        // 각 데이터 값을 셀에 추가
+        for (const key in battery) {
+          const cell = document.createElement("td");
+          if (key === "Total_Cost" || key === "Cost_per") {
+            cell.textContent = `${battery[key]}$`;
+          } else {
+            cell.textContent = battery[key];
+          }
+          row.appendChild(cell);
+        }
+
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderSellingRequests(data) {
+      const tbody = document.getElementById("selling-requests-data");
+      tbody.innerHTML = ""; // 기존 내용을 비우기
+
+      data.forEach((request) => {
+        const row = document.createElement("tr");
+
+        // Status 컬럼 추가
+        const statusCell = document.createElement("td");
+        statusCell.textContent = request.accept ? `✅ Complete` : `⏳ Waiting`;
+        row.appendChild(statusCell);
+
+        // 다른 필드 추가
+        for (const key in request) {
+          if (key === "accept") continue; // accept는 버튼으로 처리
+
+          const cell = document.createElement("td");
+
+          if (key === "costs") {
+            // Cost 필드에 단위 추가
+            cell.textContent = `${request[key]}$`;
+          } else {
+            cell.textContent = request[key];
+          }
+
+          row.appendChild(cell);
+        }
+
+        // Accept 버튼 추가
+        const actionCell = document.createElement("td");
+        const button = document.createElement("button");
+        button.textContent = request.accept ? "Completed" : "Accept";
+        button.className = request.accept ? "disabled-button" : "action-button";
+        button.disabled = request.accept;
+
+        // 버튼 클릭 이벤트
+        button.addEventListener("click", () => handleAccept(request));
+
+        actionCell.appendChild(button);
+        row.appendChild(actionCell);
+
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderPurchasingRequests(data) {
+      const tbody = document.getElementById("purchasing-requests-data");
+      tbody.innerHTML = ""; // 기존 내용을 비우기
+
+      data.forEach((request) => {
+        const row = document.createElement("tr");
+
+        // Accept 상태에 따라 Status 추가
+        const statusCell = document.createElement("td");
+        statusCell.textContent = request.accept ? "✅ Complete" : "⏳ Waiting";
+        row.appendChild(statusCell);
+
+        // 나머지 데이터 필드 추가
+        for (const key in request) {
+          if (key === "accept") continue; // accept는 Status로 처리
+
+          const cell = document.createElement("td");
+          if (key === "costs") {
+            // Cost 필드에 단위 추가
+            cell.textContent = `${request[key]}$`;
+          } else {
+            cell.textContent = request[key];
+          }
+          row.appendChild(cell);
+        }
+
+        // Accept 버튼 추가
+        const actionCell = document.createElement("td");
+        const button = document.createElement("button");
+        button.textContent = request.accept ? "Completed" : "Accept";
+        button.className = request.accept ? "disabled-button" : "action-button";
+        button.disabled = request.accept;
+
+        // 버튼 클릭 이벤트
+        button.addEventListener("click", () => handlePurchaseAccept(request));
+
+        actionCell.appendChild(button);
+        row.appendChild(actionCell);
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // 현재 로그인된 사용자 정보 렌더링
+    function renderUserName() {
+      const currentUser = JSON.parse(localStorage.getItem("current_login"));
+
+      if (currentUser && currentUser.name) {
+        document.getElementById("user-name").textContent = currentUser.name;
+      } else {
+        document.getElementById("user-name").textContent = "Guest";
+      }
+    }
+
+    document.querySelectorAll(".menu-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        // 모든 메뉴 항목에서 `selected` 클래스 제거
+        document.querySelectorAll(".menu-item").forEach((menu) => {
+          menu.classList.remove("selected");
+        });
+
+        // 클릭된 항목에 `selected` 클래스 추가
+        item.classList.add("selected");
+      });
+    });
+
+    function handleAccept(request) {
+      // 확인 메시지 표시
+      const isConfirmed = confirm("Do you want to accept this request?");
+      if (!isConfirmed) {
+        return; // 사용자가 취소를 눌렀을 경우 중단
+      }
+
+      // 로컬스토리지에서 기존 요청 데이터 가져오기
+      const requests = getSellingRequestsFromLocalStorage();
+
+      // 해당 요청을 찾아 accept 상태 변경
+      const updatedRequests = requests.map((r) => {
+        if (r.date === request.date && r.type === request.type) {
+          r.accept = true; // 상태 변경
+        }
+        return r;
+      });
+
+      // 변경된 데이터 로컬스토리지에 저장
+      localStorage.setItem("selling_requests", JSON.stringify(updatedRequests));
+
+      // 해당 테이블만 다시 렌더링
+      renderSellingRequests(updatedRequests);
+
+      // 성공 알림 표시
+      alert("The transaction has been successfully completed!");
+    }
+
+    function handlePurchaseAccept(request) {
+      const isConfirmed = confirm(
+        "Do you want to accept this purchase request?"
+      );
+      if (!isConfirmed) {
+        return; // 사용자가 취소를 눌렀을 경우 중단
+      }
+
+      // 로컬스토리지에서 기존 요청 데이터 가져오기
+      const requests = getPurchasingRequestsFromLocalStorage();
+
+      // 해당 요청을 찾아 accept 상태 변경
+      const updatedRequests = requests.map((r) => {
+        if (r.date === request.date && r.type === request.type) {
+          r.accept = true; // 상태 변경
+        }
+        return r;
+      });
+
+      // 변경된 데이터 로컬스토리지에 저장
+      localStorage.setItem(
+        "purchasing_requests",
+        JSON.stringify(updatedRequests)
+      );
+
+      // 해당 테이블만 다시 렌더링
+      renderPurchasingRequests(updatedRequests);
+
+      // 성공 알림 표시
+      alert("The transaction has been successfully completed!");
+    }
+
+    // 초기화 시 실행
+    document.addEventListener("DOMContentLoaded", () => {
+      const batteries = getBatteriesFromLocalStorage();
+      renderBatteries(batteries);
+
+      const requests = getSellingRequestsFromLocalStorage();
+      renderSellingRequests(requests);
+
+      const purchasingRequests = getPurchasingRequestsFromLocalStorage();
+      renderPurchasingRequests(purchasingRequests);
+
+      renderUserName(); // 유저 이름 렌더링
+
+      // 로그아웃 이벤트 처리
+      document
+        .getElementById("logout-section")
+        .addEventListener("click", () => {
+          // 로컬스토리지에서 current_login 삭제
+          localStorage.removeItem("current_login");
+
+          // 로그인 페이지로 리다이렉트
+          window.location.href = "./login.html";
+        });
+    });
+  </script>
+</html>
